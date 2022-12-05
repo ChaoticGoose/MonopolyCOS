@@ -1,0 +1,85 @@
+<head>
+	<script>
+		var events =
+		[
+			[ //No Houses
+				function(){return "Go Back 3 Spaces";},
+				function(){return "Use d4 movement die. If already using d4, use d6 movement die";},
+				function(){return "Reverse Direction of travel";},
+				function(){return "Advance to Jail (Just visiting)";},
+			],
+			[ //One House
+				function(){return "Advance to the nearest station";},
+				function(){return "Advance to the nearest utility";},
+				function(){return "Advance to GO";},
+				function(){return "Go to Jail";},
+				function(){return "Select another player, that player goes to Jail";},
+				function(){return "Use d8 movement die. If already using d8, use d6 movement die";},
+				function(){return "Go Back "+ GetRandom(1,6) +" spaces";},
+				function(){return "Swap the location of any two tiles. If a player is on one of those tiles, they move with it";},
+			],
+			[ //Two House
+				function(){return "Pay $" + (50*GetRandom(1,6));},
+				function(){return "Pay $" + (25*GetRandom(1,6));},
+				function(){return "Collect $" + (50*GetRandom(1,4));},
+				function(){return "Collect $" + (25*GetRandom(1,6));},
+				function(){return "Collect $" + (10*GetRandom(1,4)) + " from each opponant";},
+				function(){return "Pay $" + (10*GetRandom(1,6)) + " to each opponant";},
+			],
+			[ //Three House
+				function(){return "Use d10 movement die. If already using d10, use d6 movement die";},
+				function(){return "Collect $" +(10 * GetRandom(1,4)) +" for each property you own";},
+				function(){return "Pay $"+(10*GetRandom(1,6))+" for each property you own";},
+				function(){return "Each player advances to the next players position";},
+			],
+			[ //Four House
+			function(){return "Gain control of the nearest railroad";},
+			function(){return "Add one level to any property you own";},
+			function(){return "Remove one level from any property owned by an opponant";},
+			function(){return "Gain control of a random unowned property";},
+			function(){return "Return a property you control to the bank";},
+			],
+			[ //Hotel
+				function(){return "Add One Level to each property that is not owned by the bank or mortgaged";},
+				function(){return "Remove Two Levels from all properties";},
+				function(){return "Move Forward "+GetRandom(1,40)+" Spaces";},
+				function(){return "Each player selects a property owned by the next player in turn order. Each player rolls a d20. Highest roll keeps their property and the property they selected. All other selected properties are returned to the bank.";},
+			],
+		];
+		
+		function GetRandom(min, max){
+			return Math.ceil(Math.random() * (max - min + 1)) 
+		}
+		
+		var last_level = -1;
+		var last_event = -1;
+		function GenerateEvent(id){
+			id++;
+			if(id >= events.length)
+				id = events.length;
+			do{
+				var level = Math.floor(Math.random() * id);
+				var event = Math.floor(Math.random() * events[level].length);
+			}
+			while(level == last_level && event == last_event)
+			last_level = level;
+			last_event = event;
+		
+			document.getElementById("EventMessage").innerHTML = "" + level + "." + event +": ";
+			document.getElementById("EventMessage").innerHTML += events[level][event]();
+		}
+	</script>
+</head>
+<body>
+
+	<h1>Cup Of Suck</h1>
+	<button onclick="GenerateEvent(0);">Generate L0 Event</button>
+	<button onclick="GenerateEvent(1);">Generate L1 Event</button>
+	<button onclick="GenerateEvent(2);">Generate L2 Event</button>
+	<br/>
+	<button onclick="GenerateEvent(3);">Generate L3 Event</button>
+	<button onclick="GenerateEvent(4);">Generate L4 Event</button>
+	<button onclick="GenerateEvent(5);">Generate L5 Event</button>
+	<p id="EventMessage">Test</p>
+
+</body>
